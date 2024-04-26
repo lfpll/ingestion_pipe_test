@@ -5,11 +5,12 @@ This is small project to a company test done in aproximately a day of work.
 # Requirements
 - docker-compose
 - docker
+- psql
 
 # Makefile How to use it
 
-- `make clean` - Cleans up directories and stops any running Docker containers, removing volumes as necessary.
-- `make build` - Builds Docker containers using Docker Compose.
+- `make clean` - Cleans up directories and stops any running Docker containers, removing volumes as necessary.*
+- `make build` - Builds Docker containers using Docker Compose, a **jupyter server and a postgres database**
 - `make up` - Starts Docker containers, ensuring no containers are currently running before starting.
 - `make down` - Stops and removes Docker containers.
 - `make check-stop` - Checks if any Docker containers are currently up and stops them if they are.
@@ -25,6 +26,10 @@ All this commands are suppose to run on root.
 First build and run docker-compose and the docker ingestion file.
 ```bash
 make build # this builds both docker-compose and dockerfile
+```
+
+Run the local database:
+```bash
 make up
 ```
 
@@ -38,7 +43,9 @@ Run the process to create something that modifies the table:
 docker run --net host -e "POSTGRES_PASSWORD=postgres" -v ./data:/app/data ingestion-data -- --csv_path app/data/modified_data.csv
 ```
 
-After doing this if you want do check it again run before:
+If you want to check data just go to  [local notebook](http://localhost:8080/notebooks/work/check_data.ipynb) and run all the cells. The pip install was there just so because this is a exercise.
+
+After doing this if you can clean the volumes and docker-compose:
 ```
 make clean
 ```
@@ -48,7 +55,7 @@ make clean
 This is quite straight forward just to show that I can develop in python.
 
 Considerations:
- - For the sake of this is just a test I will not think about complex data types that come from string on csv inference e.g:date, timestamp, ts
+ - For the sake of this is just a test I `will not think about complex data types that come from string on csv inference e.g:date, timestamp, ts
 - The conversions is not perfect, object type could be converted to numbers in a initial case of nulls
 - For simplicity of the code I used pandas types
 - This uses a separation of target and source so we can abstract this in the future for other solutions.

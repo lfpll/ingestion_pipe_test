@@ -13,8 +13,18 @@ services:
       - db_data:/var/lib/postgresql/data:Z
   jupyter:
     image: jupyter/datascience-notebook:latest
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+      NOTEBOOK_ALLOW_ORIGIN: '*'
+      JUPYTER_TOKEN: ''
+      JUPYTER_PASSWORD: ''
+    command: ["jupyter", "notebook", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root", "--port=8080", "--no-browser", "--ip=0.0.0.0"]
     ports:
-      - "8888:8888"
+      - "8080:8080"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    links:
+      - database
 
 volumes:
   db_data:
