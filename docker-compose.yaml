@@ -1,0 +1,20 @@
+
+# Docker compose with postgres
+services:
+  database:
+    image: postgres:15.6
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data:Z
+  jupyter:
+    image: jupyter/datascience-notebook:latest
+    ports:
+      - "8888:8888"
+
+volumes:
+  db_data:
